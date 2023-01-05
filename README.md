@@ -14,7 +14,7 @@ Please be sure to install the versions listed above - the code in this lesson us
 
 Note: This is just the backend for our MERN stack. We will be connecting it to a React frontend, but we'll be creating and hosting that part of our app in a separate repository. This allows us to separate our backend code from our frontend code, which is a general best practice, in part because it lets us deploy our frontend to a separate server than our backend (separation of concerns).
 
-## Building out files
+## Creating our First Files
 
 ### .gitignore
 
@@ -73,3 +73,58 @@ app.listen(port, () =>{
 Once this is set up, we can start our server by running `node index.js` from our command line. You should see `server is running on port: 4000` printed out in the terminal.
 
 Congrats! You've officially created your first express web server!
+
+## Handling Requests
+
+Let's try accessing our newly spun up server in our browser by visiting `http://localhost:4000/`. What do we see?
+
+Unless you've already added more code, you're likely going to see the following message - `Cannot GET /`.
+
+<em>What's going on here?</em>
+
+Well, we've created our web server, but haven't actually told our web server how to handle any requests from a client. When we visit a URL, the browser makes a GET request to the server specified by that URL. Currently, our server is communicating to our browser that there is no logic to handle a GET request to our base url - `http://localhost:4000/`. However, the message we get back only tells us about the <em>relative</em> URL - that's why we just see `/`. It's ommitted the `http://localhost:4000` part, since that's going to be included in every request a client makes.
+
+### Adding our first route
+
+In order to handle this type of behavior, we need to give our express server instructions on how to handle certain types of requests. Let's create some initial logic to handle our `/` route:
+
+```
+app.get('/', function(req, res){
+    res.send('<h1>Hello, world!</h1>')
+})
+```
+
+Let's restart our server and try visiting our url in the browser again. You should now see an `<h1>` tag displaying "Hello, world!"
+
+Let's break this down - first, we've told our express app that it should be handling a get request - `app.get()`. Next, we told it the route it should be monitoring for this get request - `app.get('/')`. Finally, we've specified how we want this app to respond to our request by including a callback function: 
+```
+app.get('/', function(req, res){
+    res.send('<h1>Hello, world</h1>')
+})
+```
+
+Not that this callback function has two parameters - a `req` parameter and a `res` parameter. These are placeholders for the `request` object and the `response` object, which are two pieces of data created by express to handle information regarding requests and responses. In this case, we're telling our response that it should send the string `'<h1> Hello, world</h1>'` back to our browser, which will the interpret it as HTML and render it to our webpage.
+
+(Aside: This means that we actually have all that we need to create a static web app! We could simply write all our webpages as strings - including CSS styling tags and JavaScript script tags - and send them back as responses from our webserver. This is a fun, simple approach for creating a basic static webpage, but it's not that feasible for complex, large applications. Nevertheless, I encourage you to try it out and play around with it! You can still create a cool website, even with a very basic approach.
+
+Note: To send back multiple lines of html, you'll need to use backticks in your `res.send()`:
+```
+res.send(`
+     <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head> 
+    <body>
+        <h1 id="first-header">Hello, world!</h1>
+        <h2>Welcome to my website</h2>
+        <script>
+            document.querySelector("#first-header").textContent = "Hi, world!"
+        </script>
+    </body>
+    </html>
+`)
+```)
