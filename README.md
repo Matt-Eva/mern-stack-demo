@@ -39,4 +39,37 @@ Let's create our `config.env` file now too - `touch config.env`. We won't be add
 
 ### index.js
 
-The first file we'll create will be our `index.js` file, which is going to be the access point for our express app.
+The first file we'll create will be our `index.js` file, which is going to be the access point for our express app. (Note: if you've been following along and haven't run any commits yet, you should make one now.)
+
+We'll start out by simply getting our express server up and running.
+
+Within our `index.js` file, we're going to include the following code:
+
+```
+const express = require('express')
+const app = express()
+
+const port = 3000
+
+app.listen(port, () =>{
+    console.log(`server is running on port: ${port}`)
+})
+```
+
+Let's break down what's going on here. First, we're importing the `express` module into our file - `const express = require("express")`. This gives us access to all of the functionality contained within `express`.
+
+Next, we create a new instance of our express application - `const app = express()`. 
+
+Then, we'll specify the port we want our new express application to run on - `const port = 4000`
+
+Finally, we'll tell our new express app to listen to the port we've specified upon startup. We've also passed in a function that will print a message to our console letting us know the server has started.
+
+```
+app.listen(port, () =>{
+    console.log(`server is running on port: ${port}`)
+})
+```
+
+Once this is set up, we can start our server by running `node index.js` from our command line. You should see `server is running on port: 4000` printed out in the terminal.
+
+Congrats! You've officially created your first express web server!
